@@ -1,8 +1,6 @@
 #include "scope_printer.hpp"
 
-#include <iostream>
 #include <stdlib.h>
-#include <memory>
 #include <thread>
 
 void std_async();

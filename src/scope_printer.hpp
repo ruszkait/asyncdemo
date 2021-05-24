@@ -46,8 +46,7 @@ class log_printer : public std::ostringstream
 {
 public:
     log_printer(std::string_view function_name)
-        : function_name_(function_name)
-    {}
+        : function_name_(function_name) {}
 
     ~log_printer()
     {

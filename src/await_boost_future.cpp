@@ -14,12 +14,12 @@
 #include <string>
 #include <iomanip>
 
-namespace {
-
+namespace
+{
     // Enable the use of std::future<T> as a coroutine type
     // by using a std::promise<T> as the promise type.
     template <typename T, typename... Args> requires(!std::is_void_v<T> && !std::is_reference_v<T>)
-        struct std::coroutine_traits<boost::future<T>, Args...>
+    struct std::coroutine_traits<boost::future<T>, Args...>
     {
         // The promise type is the type with which the compiler generated code interacts with
         struct promise_type
@@ -32,8 +32,15 @@ namespace {
             std::suspend_never final_suspend() const noexcept { return {}; }
 
             // If co_return is used inside the coroutine code, then this is the place where we store the value into the promise
-            void return_value(const T& value) noexcept(std::is_nothrow_copy_constructible_v<T>) { promise_.set_value(value); }
-            void return_value(T&& value) noexcept(std::is_nothrow_move_constructible_v<T>) { promise_.set_value(std::move(value)); }
+            void return_value(const T& value) noexcept(std::is_nothrow_copy_constructible_v<T>)
+            {
+                promise_.set_value(value);
+            }
+
+            void return_value(T&& value) noexcept(std::is_nothrow_move_constructible_v<T>)
+            {
+                promise_.set_value(std::move(value));
+            }
 
             // If an exception is thrown from the coroutine code, then it is stored here into the promise
             void unhandled_exception() noexcept { promise_.set_exception(std::current_exception()); }
@@ -78,14 +85,15 @@ namespace {
                 log_printer(__FUNCTION__) << "Preparing for suspension";
 
                 //continuation_future_ = std::move(future_.then(boost::launch::async, [this, coroutine_handler](boost::future<T> parent_future) {
-                (void)future_.then(boost::launch::async, [this, coroutine_handler](boost::future<T> parent_future) {
+                (void)future_.then(boost::launch::async, [this, coroutine_handler](boost::future<T> parent_future)
+                {
                     scope_printer scope(__FUNCTION__);
                     log_printer(__FUNCTION__) << "Resume coroutine";
                     // resume the coroutine from waiting, drive the coroutine from this current thread
                     // till the next suspension point
                     value_ = std::move(parent_future.get());
                     coroutine_handler.resume();
-                    });
+                });
             }
 
             // The awaiting is over or was not necessary,
@@ -100,32 +108,33 @@ namespace {
             mutable boost::future<T> future_;
         };
 
-        return future_awaiter{ std::move(future) };
+        return future_awaiter{std::move(future)};
     }
-
 
 
     boost::future<std::string> read_file_async(std::filesystem::path filename)
     {
         scope_printer scope(__FUNCTION__);
 
-        std::unique_ptr<std::istream> data_stream = co_await boost::async(boost::launch::async, [=] {
-                log_printer(__FUNCTION__) << "Opening stream " << filename;
-                auto data_stream = std::make_unique<std::ifstream>(filename);
-                log_printer(__FUNCTION__)  << "Opened stream " << filename;
-                return data_stream;
-            });
+        std::unique_ptr<std::istream> data_stream = co_await boost::async(boost::launch::async, [=]
+        {
+            log_printer(__FUNCTION__) << "Opening stream " << filename;
+            auto data_stream = std::make_unique<std::ifstream>(filename);
+            log_printer(__FUNCTION__) << "Opened stream " << filename;
+            return data_stream;
+        });
 
         log_printer(__FUNCTION__) << "data stream available";
 
-        auto data = co_await boost::async(boost::launch::async, [data_stream = std::move(data_stream)]{
-                std::string text;
-                text.resize(128);
-                log_printer(__FUNCTION__)  << "Reading stream";
-                data_stream->read(text.data(), text.size());
-                log_printer(__FUNCTION__)  << "Read stream";
-                return text;
-            });
+        auto data = co_await boost::async(boost::launch::async, [data_stream = std::move(data_stream)]
+        {
+            std::string text;
+            text.resize(128);
+            log_printer(__FUNCTION__) << "Reading stream";
+            data_stream->read(text.data(), text.size());
+            log_printer(__FUNCTION__) << "Read stream";
+            return text;
+        });
 
         log_printer(__FUNCTION__) << "data filled";
 
