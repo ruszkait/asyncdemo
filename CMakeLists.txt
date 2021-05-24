@@ -14,8 +14,11 @@ target_sources(${PROJECT_NAME}
         ${CMAKE_CURRENT_SOURCE_DIR}/src/std_async.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/await_future.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/await_boost_future.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/generator.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/scope_printer.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/future_coroutine.hpp
 )
+ 
 
 target_link_libraries(${PROJECT_NAME} 
     PRIVATE
