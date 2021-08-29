@@ -11,9 +11,9 @@ void generator();
 int main()
 {
     scope_printer scope(__FUNCTION__);
-    // std_async();
-    // await_future();
+    //std_async();
+    await_future();
     //await_boost_future();
-    generator();
+    //generator();
     return EXIT_SUCCESS;
 }

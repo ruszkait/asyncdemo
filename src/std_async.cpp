@@ -1,11 +1,8 @@
 #include "scope_printer.hpp"
 
-#define BOOST_THREAD_PROVIDES_FUTURE
-#define BOOST_THREAD_PROVIDES_FUTURE_CONTINUATION
 #include <boost/thread/future.hpp>
 
 #include <future>
-#include <thread>
 
 namespace
 {

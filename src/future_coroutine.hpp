@@ -5,13 +5,9 @@
 #include <coroutine>
 #include <exception>
 #include <future>
-#include <iostream>
 #include <thread>
 #include <type_traits>
 #include <fstream>
-#include <memory>
-#include <string>
-#include <filesystem>
 
 namespace {
 // Enable the use of std::future<T> as a coroutine type

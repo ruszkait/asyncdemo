@@ -6,7 +6,7 @@
 #include <sstream>
 #include <mutex>
 
-inline std::mutex cout_mutex_;
+static inline std::mutex cout_mutex_;
 
 class separator_printer
 {

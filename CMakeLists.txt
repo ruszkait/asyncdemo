@@ -19,6 +19,11 @@ target_sources(${PROJECT_NAME}
         ${CMAKE_CURRENT_SOURCE_DIR}/src/future_coroutine.hpp
 )
  
+target_compile_definitions(${PROJECT_NAME}
+    PRIVATE
+        BOOST_THREAD_PROVIDES_FUTURE
+        BOOST_THREAD_PROVIDES_FUTURE_CONTINUATION
+)
 
 target_link_libraries(${PROJECT_NAME} 
     PRIVATE
