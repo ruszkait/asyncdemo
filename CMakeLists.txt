@@ -17,6 +17,7 @@ target_sources(${PROJECT_NAME}
         ${CMAKE_CURRENT_SOURCE_DIR}/src/generator.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/scope_printer.hpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/future_coroutine.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/boost_future_coroutine.hpp
 )
  
 target_compile_definitions(${PROJECT_NAME}

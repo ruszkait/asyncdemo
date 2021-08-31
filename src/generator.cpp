@@ -9,45 +9,47 @@
 
 namespace {
 
-// Not supported yet
-    // std::experimental::generator<std::string> read_file_generator_async(std::filesystem::path filename)
-    // {
-    //     scope_printer scope(__FUNCTION__);
+// co_await is not supported yet from a generator
+/*
+     std::experimental::generator<std::string> read_file_generator_async(std::filesystem::path filename)
+     {
+         scope_printer scope(__FUNCTION__);
 
-    //     std::unique_ptr<std::istream> data_stream = co_await std::async(std::launch::async, [=] {
-    //         log_printer(__FUNCTION__) << "Opening stream " << filename;
-    //         auto data_stream = std::make_unique<std::ifstream>(filename);
-    //         log_printer(__FUNCTION__) << "Stream opened " << filename;
-    //         return data_stream;
-    //     });
+         std::unique_ptr<std::istream> data_stream = co_await std::async(std::launch::async, [=] {
+             log_printer(__FUNCTION__) << "Opening stream " << filename;
+             auto data_stream = std::make_unique<std::ifstream>(filename);
+             log_printer(__FUNCTION__) << "Stream opened " << filename;
+             return data_stream;
+         });
 
-    //     for (;;)
-    //     {
-    //         auto data = co_await std::async(std::launch::async, [data_stream = std::move(data_stream)] {
-    //             std::string text;
-    //             text.resize(128);
-    //             log_printer(__FUNCTION__) << "Reading stream";
-    //             data_stream->read(text.data(), text.size());
-    //             log_printer(__FUNCTION__) << "Read stream";
-    //             return text;
-    //         });
+         for (;;)
+         {
+             auto data = co_await std::async(std::launch::async, [data_stream = std::move(data_stream)] {
+                 std::string text;
+                 text.resize(128);
+                 log_printer(__FUNCTION__) << "Reading stream";
+                 data_stream->read(text.data(), text.size());
+                 log_printer(__FUNCTION__) << "Read stream";
+                 return text;
+             });
 
-    //         const bool no_more_data = data.empty();
-    //         if (no_more_data)
-    //             break;
+             const bool no_more_data = data.empty();
+             if (no_more_data)
+                 break;
 
-    //         co_yield data;
-    //     }
-    // }
+             co_yield data;
+         }
+     }
 
-    // void read_file_async()
-    // {
-    //     separator_printer separator;
-    //     scope_printer scope(__FUNCTION__);
-    //     auto text_generator = read_file_generator_async("../CMakeLists.txt");
-    //     for (const std::string& text : text_generator)
-    //         std::cout << text;
-    // }
+     void read_file_async()
+     {
+         separator_printer separator;
+         scope_printer scope(__FUNCTION__);
+         auto text_generator = read_file_generator_async("../CMakeLists.txt");
+         for (const std::string& text : co_await text_generator)
+             std::cout << text;
+     }
+     */
 
     std::experimental::generator<std::string> read_file_generator(std::filesystem::path filename)
     {

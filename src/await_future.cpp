@@ -52,7 +52,9 @@ void read_file()
 {
     separator_printer separator;
     scope_printer scope(__FUNCTION__);
-    std::cout << read_file_async("../CMakeLists.txt").get() << '\n';
+    auto file_content = read_file_async("../CMakeLists.txt");
+    file_content.wait();
+    std::cout << file_content.get() << '\n';
 }
 
 
